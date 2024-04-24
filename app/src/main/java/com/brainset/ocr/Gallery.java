@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -124,12 +125,24 @@ public class Gallery extends AppCompatActivity {
         pauseBTN = findViewById(R.id.pause);
         resumeBTN = findViewById(R.id.resume);
 
+        ImageView backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Finish the activity and go back
+            }
+        });
+
+
 
         // Setting onClick listeners for buttons to handle user interactions
 
         resumeBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resumeBTN.setVisibility(View.GONE);
+                pauseBTN.setVisibility(View.VISIBLE);
+
                 if (lastSpokenIndex >= 0 && lastSpokenIndex + 1 < textSegments.length) {
                     applyTTSConfig(); // Apply pitch and speed settings from SharedPreferences
                     // Start speaking from the next segment
@@ -140,6 +153,9 @@ public class Gallery extends AppCompatActivity {
         pauseBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pauseBTN.setVisibility(View.GONE);
+                resumeBTN.setVisibility(View.VISIBLE);
+
                 if (textToSpeech.isSpeaking()) {
                     textToSpeech.stop();
                     // Do not reset lastSpokenIndex here. It should retain the value of the last spoken segment.
@@ -212,6 +228,10 @@ public class Gallery extends AppCompatActivity {
         speechBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pauseBTN.setVisibility(View.VISIBLE);
+                resumeBTN.setVisibility(View.GONE);
+                //speechBTN.setVisibility(View.GONE);
+
                 String fullText = editText.getText().toString();
                 String[] sentences = fullText.split("\\. ");
                 lastSpokenIndex = -1; // Reset here as well
@@ -223,6 +243,9 @@ public class Gallery extends AppCompatActivity {
         clearBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pauseBTN.setVisibility(View.GONE);
+                resumeBTN.setVisibility(View.GONE);
+
                 editText.setText(""); // Clears the textView
                 lastSpokenIndex = -1; // Reset the last spoken index
                 // Stops tts from speaking and clears resources
@@ -361,16 +384,16 @@ public class Gallery extends AppCompatActivity {
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
 
-    private void showBottomDialog(){
+    private void showBottomDialog() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.bottomsheetdash,null);
+        View view = LayoutInflater.from(this).inflate(R.layout.bottomsheetdash, null);
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
 
         LinearLayout galleryLayout = view.findViewById(R.id.bottomsheetGallery);
         LinearLayout cameraLayout = view.findViewById(R.id.bottomsheetCamera);
 
-        galleryLayout.setOnClickListener(v ->{
+        galleryLayout.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
             OpenGallery();
         });
@@ -385,6 +408,9 @@ public class Gallery extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Clear the EditText when a new photo is selected
+        editText.setText("");
 
         // Handle the result for the image capture request.
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){

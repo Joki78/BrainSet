@@ -13,12 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="417dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/choose_image"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:id="@+id/editText"
@@ -29,17 +28,29 @@
             android:textSize="20sp" />
     </ScrollView>
 
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:padding="8dp"/>
+
 
     <Button
         android:id="@+id/choose_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/scrollView"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginEnd="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:text="Select Image"
-        android:textColor="#333333"/>
+        android:textColor="#333333" />
 
 
     <Button
@@ -47,30 +58,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/scrollView"
+        android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
-        android:layout_toEndOf="@+id/choose_image"
+        android:layout_marginTop="60dp"
         android:src="@drawable/speech"
         android:text="Speech"
         android:textColor="#333333" />
 
     <Button
         android:id="@+id/clear"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/resume"
-        android:layout_marginStart="20dp"
-        android:layout_toEndOf="@+id/saveButton"
-        android:src="@drawable/clear"
-        android:text="Clear"
+        android:layout_below="@+id/scrollView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="-50dp"
+        android:drawableEnd="@drawable/baseline_delete_forever_24"
         android:textColor="#333333" />
+
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pause"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="13dp"
+        android:layout_toStartOf="@id/clear"
+        android:layout_below="@+id/scrollView"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="-50dp"
         android:src="@drawable/brain"
         android:text="Save Scan"
         android:textColor="#333333" />
@@ -79,23 +93,28 @@
         android:id="@+id/pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/choose_image"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="8dp"
+        android:layout_below="@+id/scrollView"
+        android:layout_toEndOf="@id/speech"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="#FF0000"
         android:src="@drawable/brain"
         android:text="Pause"
-        android:textColor="#333333" />
+        android:textColor="#333333"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/resume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/pause"
+        android:layout_below="@+id/scrollView"
+        android:layout_toEndOf="@id/speech"
         android:layout_marginStart="20dp"
-        android:layout_toEndOf="@id/pause"
+        android:layout_marginTop="60dp"
         android:src="@drawable/brain"
+        android:backgroundTint="#15DB4D"
         android:text="Resume"
-        android:textColor="#333333" />
+        android:textColor="#333333"
+        android:visibility="gone"/>
 
 </RelativeLayout>
