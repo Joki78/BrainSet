@@ -56,6 +56,15 @@ public class Scanner extends AppCompatActivity {
         detectBtn = findViewById(R.id.idButtonDetect);
         speechBtn = findViewById(R.id.speech);
         clearBtn = findViewById(R.id.clear);
+
+        ImageView backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Finish the activity and go back
+            }
+        });
+
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
