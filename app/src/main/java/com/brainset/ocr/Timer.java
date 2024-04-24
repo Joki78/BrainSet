@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class Timer extends Fragment {
     TextView countdownTimer;
-    Button start, pause, reset, resume, startFocusTime;
+    Button start, pause, cancel, resume, startFocusTime;
     CountDownTimer timer;
     long timeLeftInMillis;
     boolean focusTimeEnabled = false;
@@ -39,7 +39,7 @@ public class Timer extends Fragment {
         countdownTimer = view.findViewById(R.id.countdown_timer);
         start = view.findViewById(R.id.start);
         pause = view.findViewById(R.id.pause);
-        reset = view.findViewById(R.id.reset);
+        cancel = view.findViewById(R.id.cancel);
         resume = view.findViewById(R.id.resume);
         startFocusTime = view.findViewById(R.id.focusTimeBtn);
         a = this.getActivity();
@@ -56,6 +56,7 @@ public class Timer extends Fragment {
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
 
+
         startFocusTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +72,6 @@ public class Timer extends Fragment {
                 }
             }
         });
-
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,13 +83,16 @@ public class Timer extends Fragment {
                 long seconds = secondsPicker.getValue();
                 timeLeftInMillis = (hours * 3600000) + (minutes * 60000) + (seconds * 1000);
                 startTime(timeLeftInMillis);
+                start.setVisibility(View.GONE);
+                pause.setVisibility(View.VISIBLE);
+                cancel.setVisibility(View.VISIBLE);
             }
         });
 
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pauseTimer();
+                    pauseTimer();
             }
         });
 
@@ -100,10 +103,10 @@ public class Timer extends Fragment {
             }
         });
 
-        reset.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetTimer();
+                cancelTimer();
             }
         });
 
@@ -124,9 +127,6 @@ public class Timer extends Fragment {
 
             @Override
             public void onFinish() {
-                if (focusTimeEnabled) {
-                    FocusMode.exitFocus(a);
-                }
                 countdownTimer.setText("00:00:00");
 
                 Toast.makeText(a, "Break Time", Toast.LENGTH_SHORT).show();
@@ -146,18 +146,26 @@ public class Timer extends Fragment {
         if (timer != null) {
             timer.cancel();
         }
+        pause.setVisibility(View.GONE);
+        resume.setVisibility(View.VISIBLE);
     }
 
     private void resumeTimer() {
         startTime(timeLeftInMillis);
+        pause.setVisibility(View.VISIBLE);
+        resume.setVisibility(View.GONE);
     }
 
-    private void resetTimer() {
+    private void cancelTimer() {
         if (timer != null) {
             timer.cancel();
         }
         countdownTimer.setText("00:00:00");
         timeLeftInMillis = 0;
+        start.setVisibility(View.VISIBLE);
+        pause.setVisibility(View.GONE);
+        cancel.setVisibility(View.GONE);
+        resume.setVisibility(View.GONE);
     }
 
     private void updateCountDownText() {
